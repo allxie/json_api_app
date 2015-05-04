@@ -1,11 +1,14 @@
 class MoviesController < ApplicationController
 
 	def index
-        @movies = Movie.all
-        respond_to do |format|
-          format.html # index.html.erb
-          format.xml  { render :xml => @users }
-          format.json { render :json => @users }
-        end
-      end
+		search = params[:q]
+		
+		# safe way
+        @movies = Movie.where("title LIKE ?", "%#{search}%")
+        # Unsafe way
+        # @movies = Movie.where("title LIKE \"%#{search}%\"")
+        render :json => @movies 
+
+
+    end
 end
